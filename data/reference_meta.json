@@ -1,0 +1,652 @@
+{
+ "source": "3d3e473a-msfr_design_framework.html",
+ "stage2_keys": [
+  "uf4_molpct",
+  "u238_pct",
+  "hn_molpct",
+  "u234_pct",
+  "li7_enrich",
+  "core_radius",
+  "u236_pct",
+  "fuel_inlet_T",
+  "fuel_density_mult"
+ ],
+ "stage3_keys": [
+  "uf4_molpct",
+  "power_MWth",
+  "u233_feed_kgd",
+  "th_feed_kgd",
+  "lan_cycle_d",
+  "nm_cycle_s",
+  "gas_cycle_s",
+  "alk_cycle_d",
+  "zr_cycle_d"
+ ],
+ "times_y": [
+  0.0,
+  0.25,
+  0.5,
+  0.75,
+  1.0,
+  1.5,
+  2.0,
+  2.5,
+  3.0,
+  3.5,
+  4.0,
+  4.5,
+  5.0,
+  7.0,
+  9.0,
+  11.0,
+  13.0,
+  15.0,
+  18.0,
+  21.0,
+  24.0,
+  27.0,
+  30.0
+ ],
+ "stage2_params": {
+  "uf4_molpct": {
+   "key": "uf4_molpct",
+   "name": "Fissile loading (233UF4)",
+   "unit": "mol%",
+   "low": 2.2,
+   "high": 2.9,
+   "nominal": 2.515
+  },
+  "u238_pct": {
+   "key": "u238_pct",
+   "name": "238U denaturing fraction in uranium",
+   "unit": "at%",
+   "low": 0.0,
+   "high": 20.0,
+   "nominal": 0.0
+  },
+  "hn_molpct": {
+   "key": "hn_molpct",
+   "name": "Heavy-nuclide fraction (ThF4+UF4)",
+   "unit": "mol%",
+   "low": 20.0,
+   "high": 25.0,
+   "nominal": 22.5
+  },
+  "u234_pct": {
+   "key": "u234_pct",
+   "name": "234U in uranium",
+   "unit": "at%",
+   "low": 0.0,
+   "high": 10.0,
+   "nominal": 0.0
+  },
+  "li7_enrich": {
+   "key": "li7_enrich",
+   "name": "7Li enrichment of fuel LiF",
+   "unit": "at%",
+   "low": 99.5,
+   "high": 99.995,
+   "nominal": 99.9
+  },
+  "core_radius": {
+   "key": "core_radius",
+   "name": "Core radius",
+   "unit": "cm",
+   "low": 100.0,
+   "high": 125.0,
+   "nominal": 112.75
+  },
+  "u236_pct": {
+   "key": "u236_pct",
+   "name": "236U in uranium",
+   "unit": "at%",
+   "low": 0.0,
+   "high": 3.0,
+   "nominal": 0.0
+  },
+  "fuel_inlet_T": {
+   "key": "fuel_inlet_T",
+   "name": "Fuel salt core-inlet temperature",
+   "unit": "K",
+   "low": 898.0,
+   "high": 948.0,
+   "nominal": 923.15
+  },
+  "fuel_density_mult": {
+   "key": "fuel_density_mult",
+   "name": "Fuel density multiplier (property uncertainty)",
+   "unit": "-",
+   "low": 0.97,
+   "high": 1.03,
+   "nominal": 1.0
+  }
+ },
+ "stage3_params": {
+  "uf4_molpct": {
+   "key": "uf4_molpct",
+   "name": "Fissile loading (233UF4)",
+   "unit": "mol%",
+   "low": 2.2,
+   "high": 2.9,
+   "nominal": 2.515,
+   "log": false
+  },
+  "power_MWth": {
+   "key": "power_MWth",
+   "name": "Thermal power",
+   "unit": "MWth",
+   "low": 2500.0,
+   "high": 3500.0,
+   "nominal": 3000.0,
+   "log": false
+  },
+  "u233_feed_kgd": {
+   "key": "u233_feed_kgd",
+   "name": "Net 233U feed (+) / extraction (-) in fuel salt",
+   "unit": "kg/d",
+   "low": -0.8,
+   "high": 0.8,
+   "nominal": 0.0,
+   "log": false
+  },
+  "th_feed_kgd": {
+   "key": "th_feed_kgd",
+   "name": "Th-232 feed to fuel salt",
+   "unit": "kg/d",
+   "low": 2.0,
+   "high": 4.5,
+   "nominal": 3.0,
+   "log": false
+  },
+  "lan_cycle_d": {
+   "key": "lan_cycle_d",
+   "name": "Lanthanide removal cycle",
+   "unit": "d",
+   "low": 100.0,
+   "high": 20000.0,
+   "nominal": 450.0,
+   "log": true
+  },
+  "nm_cycle_s": {
+   "key": "nm_cycle_s",
+   "name": "Noble-metal removal cycle",
+   "unit": "s",
+   "low": 30.0,
+   "high": 10000000.0,
+   "nominal": 30.0,
+   "log": true
+  },
+  "gas_cycle_s": {
+   "key": "gas_cycle_s",
+   "name": "Kr/Xe removal cycle (He bubbling)",
+   "unit": "s",
+   "low": 10.0,
+   "high": 100000.0,
+   "nominal": 30.0,
+   "log": true
+  },
+  "alk_cycle_d": {
+   "key": "alk_cycle_d",
+   "name": "Rb/Sr/Cs/Ba removal cycle",
+   "unit": "d",
+   "low": 200.0,
+   "high": 20000.0,
+   "nominal": 450.0,
+   "log": true
+  },
+  "zr_cycle_d": {
+   "key": "zr_cycle_d",
+   "name": "Zr/Cd/In/Sn removal cycle",
+   "unit": "d",
+   "low": 100.0,
+   "high": 20000.0,
+   "nominal": 450.0,
+   "log": true
+  }
+ },
+ "stage3_outputs": {
+  "keff": {
+   "label": "k_eff",
+   "unit": "-",
+   "short": "k_eff"
+  },
+  "U233_fuel_kg": {
+   "label": "233U in fuel salt",
+   "unit": "kg",
+   "short": "233U fuel"
+  },
+  "fissile_total_kg": {
+   "label": "fissile 233U+233Pa (fuel+blanket)",
+   "unit": "kg",
+   "short": "fissile total"
+  },
+  "Pa233_fuel_kg": {
+   "label": "233Pa in fuel salt",
+   "unit": "kg",
+   "short": "233Pa"
+  },
+  "FP_fuel_kg": {
+   "label": "fission products in fuel salt",
+   "unit": "kg",
+   "short": "FPs"
+  },
+  "Lan_fuel_kg": {
+   "label": "lanthanides in fuel salt",
+   "unit": "kg",
+   "short": "lanthanides"
+  },
+  "HN_molpct": {
+   "label": "heavy-nuclide fraction",
+   "unit": "mol%",
+   "short": "HN mol%"
+  },
+  "Th232_fuel_kg": {
+   "label": "232Th in fuel salt",
+   "unit": "kg",
+   "short": "232Th"
+  }
+ },
+ "pilot_metrics": {
+  "stage2": {
+   "GP": {
+    "rmse_pcm": 281.939,
+    "mae_pcm": 229.963,
+    "max_abs_pcm": 611.763,
+    "bias_pcm": 70.7944,
+    "r2": 0.998322,
+    "mc_noise_rms_pcm": 197.356,
+    "rmse_noise_corrected_pcm": 201.347,
+    "within_2sigma_mc": 0.823529,
+    "coverage95": 0.970588,
+    "z_std": 0.822393,
+    "fit_time_s": 7.36808,
+    "predict_us_per_point": 55.3039
+   },
+   "DNN": {
+    "rmse_pcm": 370.609,
+    "mae_pcm": 308.286,
+    "max_abs_pcm": 813.04,
+    "bias_pcm": 14.7262,
+    "r2": 0.997101,
+    "mc_noise_rms_pcm": 197.356,
+    "rmse_noise_corrected_pcm": 313.691,
+    "within_2sigma_mc": 0.705882,
+    "coverage95": 0.852941,
+    "z_std": 1.61249,
+    "fit_time_s": 2.15002,
+    "predict_us_per_point": 15.6912
+   },
+   "GBT": {
+    "rmse_pcm": 1539.64,
+    "mae_pcm": 1290.55,
+    "max_abs_pcm": 3292.51,
+    "bias_pcm": 27.9334,
+    "r2": 0.949966,
+    "mc_noise_rms_pcm": 197.356,
+    "rmse_noise_corrected_pcm": 1526.94,
+    "within_2sigma_mc": 0.176471,
+    "fit_time_s": 1.63036,
+    "predict_us_per_point": 95.0594
+   }
+  },
+  "stage3": {
+   "GP": {
+    "rmse_pcm": 451.637,
+    "max_abs_pcm": 1637.79,
+    "rmse_noise_corrected_pcm": 323.337,
+    "rmse_vs_time_pcm": [
+     435.177,
+     404.593,
+     381.255,
+     373.85,
+     345.061,
+     342.914,
+     354.004,
+     397.122,
+     459.364,
+     432.976,
+     399.208,
+     371.584,
+     349.216,
+     373.915,
+     488.711,
+     637.881,
+     540.894,
+     473.341,
+     449.279,
+     441.978,
+     490.683,
+     561.796,
+     678.203
+    ],
+    "coverage95": 0.971014,
+    "rmse_at_1y": 345.061,
+    "rmse_at_5y": 349.216,
+    "rmse_at_15y": 473.341,
+    "rmse_at_30y": 678.203,
+    "rmse_ci95_pcm": [
+     415.57,
+     487.218
+    ],
+    "p_best": 1.0
+   },
+   "DNN": {
+    "rmse_pcm": 734.457,
+    "max_abs_pcm": 4608.95,
+    "rmse_noise_corrected_pcm": 663.323,
+    "rmse_vs_time_pcm": [
+     444.086,
+     415.691,
+     365.163,
+     355.319,
+     359.25,
+     363.591,
+     411.521,
+     444.131,
+     511.062,
+     505.078,
+     531.553,
+     535.594,
+     604.618,
+     623.633,
+     696.927,
+     807.292,
+     880.108,
+     902.296,
+     927.953,
+     1059.35,
+     1121.64,
+     1303.13,
+     1281.99
+    ],
+    "coverage95": 0.805072,
+    "rmse_at_1y": 359.25,
+    "rmse_at_5y": 604.618,
+    "rmse_at_15y": 902.296,
+    "rmse_at_30y": 1281.99,
+    "rmse_ci95_pcm": [
+     623.192,
+     848.152
+    ],
+    "p_best": 0.0
+   },
+   "GBT": {
+    "rmse_pcm": 1493.52,
+    "max_abs_pcm": 5634.02,
+    "rmse_noise_corrected_pcm": 1459.86,
+    "rmse_vs_time_pcm": [
+     1249.94,
+     1308.45,
+     1225.4,
+     1187.85,
+     1118.48,
+     1116.93,
+     1198.8,
+     1208.4,
+     1277.2,
+     1290.29,
+     1336.6,
+     1347.25,
+     1368.62,
+     1508.17,
+     1615.8,
+     1743.95,
+     1749.59,
+     1752.45,
+     1748.17,
+     1760.35,
+     1813.71,
+     1875.67,
+     1982.11
+    ],
+    "rmse_at_1y": 1118.48,
+    "rmse_at_5y": 1368.62,
+    "rmse_at_15y": 1752.45,
+    "rmse_at_30y": 1982.11,
+    "rmse_ci95_pcm": [
+     1309.68,
+     1687.77
+    ],
+    "p_best": 0.0
+   }
+  }
+ },
+ "consensus": {
+  "rule": "retained by >= 2 of 3 methods (noise-calibrated thresholds), plus safety-forced parameters",
+  "parameters": [
+   "uf4_molpct",
+   "u238_pct",
+   "hn_molpct",
+   "u234_pct",
+   "li7_enrich",
+   "core_radius",
+   "u236_pct"
+  ],
+  "safety_forced": {
+   "fuel_inlet_T": "fuel temperature -> Doppler + density feedback coefficient (safety constraint in Stage 4)",
+   "fuel_density_mult": "fuel density -> density/void feedback (safety constraint in Stage 4)"
+  },
+  "final": [
+   "uf4_molpct",
+   "u238_pct",
+   "hn_molpct",
+   "u234_pct",
+   "li7_enrich",
+   "core_radius",
+   "u236_pct",
+   "fuel_inlet_T",
+   "fuel_density_mult"
+  ],
+  "n_final": 9,
+  "gp_cv_rmse_pcm": 658.251,
+  "gp_cv_r2": 0.990235
+ },
+ "scenarios": [
+  {
+   "name": "s1_hold_critical_evol",
+   "title": "Hold critical for 18 years with EVOL lanthanide processing",
+   "summary": "Target 0 +- 400 pcm from year 1 (after the 233Pa/Xe/Sm start-up transient) to year 18. Lanthanides fixed at the EVOL 450-day cycle; gas, noble-metal, Zr-group and alkali removal free within engineering bounds; the controller also chooses the start-up UF4 loading, the 233U feed or extraction and the Th feed.",
+   "horizon_y": 18,
+   "eval_start_y": 1.0,
+   "rho_target_pcm": 0,
+   "rho_tol_pcm": 400,
+   "surrogate": "GP",
+   "uncertainty_k": 1.0,
+   "fixed": {
+    "power_MWth": 3000
+   },
+   "fp_groups": {
+    "gas_cycle_s": {
+     "mode": "optimize",
+     "bounds": [
+      10,
+      300
+     ]
+    },
+    "nm_cycle_s": {
+     "mode": "optimize",
+     "bounds": [
+      30,
+      86400
+     ]
+    },
+    "lan_cycle_d": {
+     "mode": "fixed",
+     "value": 450
+    },
+    "zr_cycle_d": {
+     "mode": "optimize",
+     "bounds": [
+      180,
+      2000
+     ]
+    },
+    "alk_cycle_d": {
+     "mode": "optimize",
+     "bounds": [
+      300,
+      5000
+     ]
+    }
+   },
+   "feeds": {
+    "u233_feed_kgd": [
+     -0.8,
+     0.8
+    ],
+    "th_feed_kgd": [
+     2.0,
+     4.5
+    ],
+    "uf4_molpct": [
+     2.2,
+     2.9
+    ]
+   },
+   "limits": {
+    "hn_max_molpct": 25.0,
+    "fissile_max_kg": 7000,
+    "alpha_T_pcm_per_K": -6.9,
+    "dT_up_K": 50,
+    "dT_down_K": 50
+   },
+   "weights": {}
+  },
+  {
+   "name": "s2_no_lanthanide_removal",
+   "title": "Same plan with lanthanide processing unavailable",
+   "summary": "Lanthanides stay in the salt (processing outage) for the same 18-year plan. The controller must compensate the extra poisoning with feeds, loading and the other removal groups, without exceeding the heavy-nuclide solubility limit.",
+   "horizon_y": 18,
+   "eval_start_y": 1.0,
+   "rho_target_pcm": 0,
+   "rho_tol_pcm": 400,
+   "surrogate": "GP",
+   "uncertainty_k": 1.0,
+   "fixed": {
+    "power_MWth": 3000
+   },
+   "fp_groups": {
+    "gas_cycle_s": {
+     "mode": "optimize",
+     "bounds": [
+      10,
+      300
+     ]
+    },
+    "nm_cycle_s": {
+     "mode": "optimize",
+     "bounds": [
+      30,
+      86400
+     ]
+    },
+    "lan_cycle_d": {
+     "mode": "off"
+    },
+    "zr_cycle_d": {
+     "mode": "optimize",
+     "bounds": [
+      180,
+      2000
+     ]
+    },
+    "alk_cycle_d": {
+     "mode": "optimize",
+     "bounds": [
+      300,
+      5000
+     ]
+    }
+   },
+   "feeds": {
+    "u233_feed_kgd": [
+     -0.8,
+     0.8
+    ],
+    "th_feed_kgd": [
+     2.0,
+     4.5
+    ],
+    "uf4_molpct": [
+     2.2,
+     2.9
+    ]
+   },
+   "limits": {
+    "hn_max_molpct": 25.0,
+    "fissile_max_kg": 7000,
+    "alpha_T_pcm_per_K": -6.9,
+    "dT_up_K": 50,
+    "dT_down_K": 50
+   },
+   "weights": {}
+  },
+  {
+   "name": "s3_max_breeding",
+   "title": "Extract as much bred 233U as criticality allows (30 years)",
+   "summary": "Hold 0 +- 400 pcm from year 1 to year 30 with EVOL processing (lanthanides, Zr group and alkalis on 450-day cycles) while rewarding 233U extraction; the controller also picks the start-up loading. The answer is the fissile surplus the breeder can deliver while staying critical.",
+   "horizon_y": 30,
+   "eval_start_y": 1.0,
+   "rho_target_pcm": 0,
+   "rho_tol_pcm": 400,
+   "surrogate": "GP",
+   "uncertainty_k": 1.0,
+   "fixed": {
+    "power_MWth": 3000
+   },
+   "fp_groups": {
+    "gas_cycle_s": {
+     "mode": "optimize",
+     "bounds": [
+      10,
+      300
+     ]
+    },
+    "nm_cycle_s": {
+     "mode": "optimize",
+     "bounds": [
+      30,
+      86400
+     ]
+    },
+    "lan_cycle_d": {
+     "mode": "fixed",
+     "value": 450
+    },
+    "zr_cycle_d": {
+     "mode": "fixed",
+     "value": 450
+    },
+    "alk_cycle_d": {
+     "mode": "fixed",
+     "value": 450
+    }
+   },
+   "feeds": {
+    "u233_feed_kgd": [
+     -0.8,
+     0.3
+    ],
+    "th_feed_kgd": [
+     2.0,
+     4.5
+    ],
+    "uf4_molpct": [
+     2.2,
+     2.9
+    ]
+   },
+   "limits": {
+    "hn_max_molpct": 25.0,
+    "fissile_max_kg": 7000,
+    "alpha_T_pcm_per_K": -6.9,
+    "dT_up_K": 50,
+    "dT_down_K": 50
+   },
+   "weights": {
+    "u233_extraction": 4.0
+   }
+  }
+ ],
+ "alpha_T_pcm_per_K": -6.9218
+}

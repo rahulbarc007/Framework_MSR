@@ -1,0 +1,43 @@
+# =====================================================================================
+#  Same study, different plug-ins - shows how components are REPLACED by name only.
+#    * Morris screening        -> Random-Forest permutation importance
+#    * active subspace         -> Sobol' indices computed on a DNN surrogate
+#    * k_eff model set         -> GP, extra-trees, SVR, kernel ridge, GP+DNN ensemble, user plug-in
+#    * burnup PCA-GP           -> PCA on a PCE base, per-time-point GP
+#    * optimisers              -> particle swarm, simulated annealing
+#  Run:  python -m msrframe run -c config/swap_example.yaml
+# =====================================================================================
+root: ..
+project: EVOL MSFR - alternative plug-ins
+output_dir: results_swap
+catalogue: data/catalogue.csv
+plugins: [examples/custom_plugin.py]
+
+screening:
+  data: [data/screening_runs_demo.csv, data/user/screening_*.csv]
+  inputs: auto
+  methods:
+    - random_forest                                  # replaces morris
+    - sobol_pce
+    - {name: sobol_surrogate, surrogate: {name: dnn, members: 3}, n: 2048}   # replaces active_subspace
+    - spearman
+  consensus:
+    min_votes: 2
+    forced: {fuel_inlet_T: Doppler feedback, fuel_density_mult: density feedback}
+  validation: {surrogate: {name: gp, restarts: 0}, top_m: [3, 7, 12]}
+
+keff:
+  data: [data/keff_campaign.csv, data/user/keff_*.csv]
+  inputs: from_screening
+  output: keff
+  output_std: keff_std
+  params: {fuel_density_mult: {low: 0.97, high: 1.03, nominal: 1.0}}
+  models: [gp, extra_trees, svr, krr, bagged_ridge, {name: ensemble, members: [gp, dnn], label: gp+dnn}]
+  learning_curve: {fractions: [0.25, 0.5, 1.0]}
+  derived: {critical: uf4_molpct, coefficients: [fuel_inlet_T]}
+
+burnup:
+  enabled: false   # set true to compare {name: pca, base: pce} / {name: per_time, base: gp}
+
+optimize:
+  enabled: false

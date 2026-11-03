@@ -1,0 +1,32 @@
+# =====================================================================================
+#  Active-learning demo (no OpenMC needed): the analytic MSFR stand-in plays the role
+#  of OpenMC. Starting from 30 runs, each iteration asks the GP where it is least sure,
+#  "runs" 10 new cases there and retrains; a random-sampling arm is tracked for comparison.
+#  Synthetic data live in data/demo_al/ - never mixed with the real OpenMC database.
+#    python tools/make_demo_al_seed.py
+#    python -m msrframe loop -c config/demo_active_learning.yaml
+# =====================================================================================
+root: ..
+project: Active-learning demo (analytic stand-in)
+output_dir: results_active_learning
+catalogue: data/catalogue.csv
+screening: {enabled: false}
+burnup: {enabled: false}
+optimize: {enabled: false}
+keff:
+  data: [data/demo_al/*.csv]
+  user_dir: data/demo_al
+  inputs: [uf4_molpct, u238_pct, hn_molpct, u234_pct, li7_enrich, core_radius, u236_pct, fuel_inlet_T, fuel_density_mult]
+  output: keff
+  output_std: keff_std
+  models: [gp, dnn, random_forest]
+  learning_curve: {fractions: [0.25, 0.5, 1.0]}
+  derived: {critical: uf4_molpct}
+active_learning:
+  simulator: {name: analytic_msfr, noise_pcm: 280}
+  models: [gp, random_forest]
+  acquisition_model: gp
+  batch: 10
+  iterations: 6
+  compare_random: true
+  persist: true

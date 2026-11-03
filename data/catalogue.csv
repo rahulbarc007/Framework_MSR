@@ -1,0 +1,101 @@
+key,name,cls,unit,nominal,low,high,stage,handle,note,scale
+core_radius,Core radius,A. Core & vessel geometry,cm,112.75,100.0,125.0,transport,openmc.ZCylinder(r),EVOL Table 3: 1.1275 m (H/D = 1),lin
+core_height,Core height,A. Core & vessel geometry,cm,225.5,200.0,250.0,transport,openmc.ZPlane(z0=+-H/2),EVOL Table 3: 2.255 m,lin
+inner_wall_thk,Core/blanket Ni-alloy wall thickness,A. Core & vessel geometry,cm,2.0,1.0,4.0,transport,openmc.ZCylinder(r=R+t),EVOL: 2 cm Ni-based alloy walls,lin
+upper_refl_thk,Upper axial reflector thickness,A. Core & vessel geometry,cm,100.0,20.0,120.0,transport,openmc.ZPlane,Ni-alloy axial reflector (thickness not tabulated; 1 m assumed),lin
+lower_refl_thk,Lower axial reflector thickness,A. Core & vessel geometry,cm,100.0,20.0,120.0,transport,openmc.ZPlane,Ni-alloy axial reflector (1 m assumed),lin
+radial_refl_thk,Radial reflector thickness (outside B4C),A. Core & vessel geometry,cm,50.0,10.0,80.0,transport,openmc.ZCylinder,Ni-alloy outer reflector/vessel (assumed),lin
+axial_blanket_thk,Axial fertile blanket thickness,A. Core & vessel geometry,cm,0.0,0.0,40.0,transport,openmc.Cell(fill=blanket),0 in EVOL; 40 cm in the V2 breeder variant,lin
+blanket_thk,Radial fertile blanket thickness,B. Blanket & shield geometry,cm,50.0,30.0,70.0,transport,openmc.ZCylinder,EVOL: ~50 cm,lin
+blanket_height_frac,Blanket height / core height,B. Blanket & shield geometry,-,0.833703,0.65,1.0,transport,openmc.ZPlane,EVOL: 188 cm high blanket,lin
+blanket_offset_frac,Blanket vertical offset (fraction of free travel),B. Blanket & shield geometry,-,0.0,-1.0,1.0,transport,openmc.ZPlane,0 = centred on core mid-plane,lin
+outer_wall_thk,Blanket/B4C Ni-alloy wall thickness,B. Blanket & shield geometry,cm,2.0,1.0,4.0,transport,openmc.ZCylinder,EVOL: 2 cm,lin
+b4c_thk,B4C neutron-protection thickness,B. Blanket & shield geometry,cm,20.0,5.0,30.0,transport,openmc.ZCylinder,EVOL: 20 cm,lin
+hn_molpct,Heavy-nuclide fraction (ThF4+UF4),C. Fuel salt,mol%,22.5,20.0,25.0,transport,openmc.Material.add_nuclide,"EVOL: 22.5 mol% HN, 77.5 mol% LiF",lin
+uf4_molpct,Fissile loading (233UF4),C. Fuel salt,mol%,2.515,2.2,2.9,transport,openmc.Material.add_nuclide('U233'),EVOL/VTB: 2.515 mol% (critical loading),lin
+li7_enrich,7Li enrichment of fuel LiF,C. Fuel salt,at%,99.9,99.5,99.995,transport,add_nuclide('Li6'/'Li7'),99.9 at% locked reference; paper text 99.995,lin
+u232_ppm,232U in uranium,C. Fuel salt,appm,0.0,0.0,500.0,transport,add_nuclide('U232'),bred-233U contaminant,lin
+u234_pct,234U in uranium,C. Fuel salt,at%,0.0,0.0,10.0,transport,add_nuclide('U234'),non-pristine bred uranium vector,lin
+u235_pct,235U in uranium,C. Fuel salt,at%,0.0,0.0,5.0,transport,add_nuclide('U235'),non-pristine bred uranium vector,lin
+u236_pct,236U in uranium,C. Fuel salt,at%,0.0,0.0,3.0,transport,add_nuclide('U236'),parasitic absorber in recycled U,lin
+u238_pct,238U denaturing fraction in uranium,C. Fuel salt,at%,0.0,0.0,20.0,transport,add_nuclide('U238'),proliferation-resistance lever,lin
+uf3_frac,UF3 share of uranium (redox state),C. Fuel salt,%,0.0,0.0,5.0,transport,F atom count,UF3/UF4 redox buffer changes fluorine inventory,lin
+bef2_molpct,BeF2 additive (replaces LiF),C. Fuel salt,mol%,0.0,0.0,5.0,transport,add_nuclide('Be9'),melting-point lever; adds moderation,lin
+naf_molpct,NaF additive (replaces LiF),C. Fuel salt,mol%,0.0,0.0,10.0,transport,add_nuclide('Na23'),carrier-salt variant,lin
+fuel_density_mult,Fuel density multiplier (property uncertainty),C. Fuel salt,-,1.0,0.97,1.03,transport,openmc.Material.set_density,+-3% on the additive-molar-volume density,lin
+fuel_dilatation,Fuel density temperature slope,C. Fuel salt,g/cm3/K,0.000882,0.0007,0.0011,transport,openmc.Material.set_density,EVOL: rho = 4.094 - 8.82e-4 (T-1008),lin
+fuel_void_pct,Helium bubble void fraction in core,C. Fuel salt,%,0.0,0.0,2.0,transport,openmc.Material.set_density,online bubbling gas hold-up,lin
+corrosion_wppm,Dissolved corrosion products (Cr/Fe/Ni),C. Fuel salt,wppm,0.0,0.0,2000.0,transport,"add_nuclide(Cr,Fe,Ni)",structural corrosion inventory,lin
+pa233_ppm,Protactinium-233 in fuel salt,C. Fuel salt,mol ppm,0.0,0.0,1000.0,transport,add_nuclide('Pa233'),~560 mol ppm at equilibrium (27 d half-life),lin
+np237_ppm,Neptunium-237 in fuel salt,C. Fuel salt,mol ppm,0.0,0.0,300.0,transport,add_nuclide('Np237'),minor-actinide build-up,lin
+fp_lan_ppm,"Lanthanide fission products (Y, La-Er)",C. Fuel salt,mol ppm,0.0,0.0,4000.0,transport,add_nuclide(aged 233U FP vector),"reprocessing group, ~450 d cycle in EVOL",lin
+fp_nm_ppm,"Noble-metal fission products (Se,Nb-Te)",C. Fuel salt,mol ppm,0.0,0.0,1000.0,transport,add_nuclide(aged 233U FP vector),removed by bubbling (~30 s),lin
+fp_alk_ppm,"Alkali/alkaline-earth FPs (Rb,Sr,Cs,Ba)",C. Fuel salt,mol ppm,0.0,0.0,3000.0,transport,add_nuclide(aged 233U FP vector),"soluble fluorides; Cs belongs here, not with gases",lin
+fp_zr_ppm,Zr/Cd/In/Sn group FPs,C. Fuel salt,mol ppm,0.0,0.0,2000.0,transport,add_nuclide(aged 233U FP vector),soluble fluorides,lin
+fp_hal_ppm,"Halogen FPs (Br, I)",C. Fuel salt,mol ppm,0.0,0.0,300.0,transport,add_nuclide(aged 233U FP vector),soluble,lin
+fp_gas_ppm,"Noble-gas FPs (Kr, Xe incl. 135Xe)",C. Fuel salt,mol ppm,0.0,0.0,50.0,transport,add_nuclide(aged 233U FP vector),gas hold-up after sparging,lin
+blanket_thf4_molpct,Blanket ThF4 fraction,D. Blanket salt,mol%,22.5,18.0,27.0,transport,add_nuclide('Th232'),EVOL: LiF-ThF4 77.5-22.5,lin
+blanket_li7_enrich,7Li enrichment of blanket LiF,D. Blanket salt,at%,99.9,99.0,99.995,transport,add_nuclide('Li6'/'Li7'),,lin
+blanket_temp,Blanket salt temperature,D. Blanket salt,K,923.15,873.0,1023.0,transport,openmc.Cell.temperature,EVOL: 650 C mean,lin
+blanket_density_mult,Blanket density multiplier,D. Blanket salt,-,1.0,0.97,1.03,transport,openmc.Material.set_density,,lin
+blanket_u233_molpct,Bred 233UF4 in blanket,D. Blanket salt,mol%,0.0,0.0,0.5,transport,add_nuclide('U233'),blanket inventory before extraction,lin
+blanket_pa233_ppm,Pa-233 in blanket salt,D. Blanket salt,mol ppm,0.0,0.0,1000.0,transport,add_nuclide('Pa233'),,lin
+alloy_density,Ni-alloy density,E. Structural alloy,g/cm3,10.0,8.5,10.5,transport,openmc.Material.set_density,EVOL: 10 g/cm3,lin
+alloy_W,W content,E. Structural alloy,at%,9.976,0.0,15.0,transport,add_element('W'),Table 2,lin
+alloy_Cr,Cr content,E. Structural alloy,at%,8.014,5.0,12.0,transport,add_element('Cr'),Table 2,lin
+alloy_Mo,Mo content,E. Structural alloy,at%,0.736,0.0,16.0,transport,add_element('Mo'),Table 2 (Hastelloy-N ~16 wt% Mo),lin
+alloy_Fe,Fe content,E. Structural alloy,at%,0.632,0.0,5.0,transport,add_element('Fe'),Table 2,lin
+alloy_Ti,Ti content,E. Structural alloy,at%,0.295,0.0,2.0,transport,add_element('Ti'),Table 2,lin
+alloy_C,C content,E. Structural alloy,at%,0.294,0.0,1.0,transport,"add_nuclide('C12','C13')",Table 2,lin
+alloy_Mn,Mn content,E. Structural alloy,at%,0.257,0.0,1.0,transport,add_element('Mn'),Table 2,lin
+alloy_Si,Si content,E. Structural alloy,at%,0.252,0.0,1.0,transport,add_element('Si'),Table 2,lin
+alloy_Al,Al content,E. Structural alloy,at%,0.052,0.0,0.5,transport,add_element('Al'),Table 2,lin
+alloy_B,B impurity,E. Structural alloy,at%,0.033,0.0,0.1,transport,add_element('B'),Table 2,lin
+alloy_PS,P + S impurities,E. Structural alloy,at%,0.027,0.0,0.1,transport,"add_element('P','S')",Table 2 (0.023 + 0.004),lin
+b10_enrich,10B enrichment of B4C,F. Neutron shield,at%,19.8,10.0,90.0,transport,"add_element('B', enrichment)","EVOL: natural B, 19.8% 10B",lin
+b4c_density,B4C density,F. Neutron shield,g/cm3,2.52,1.8,2.52,transport,openmc.Material.set_density,EVOL: 2.52 g/cm3,lin
+fuel_inlet_T,Fuel salt core-inlet temperature,G. Thermal state,K,923.15,898.0,948.0,transport,openmc.Cell.temperature (5 axial zones),EVOL: 650 C inlet,lin
+fuel_deltaT,Core temperature rise,G. Thermal state,K,100.0,60.0,140.0,transport,openmc.Cell.temperature (5 axial zones),EVOL: 650->750 C,lin
+wall_T,Wall temperature,G. Thermal state,K,973.15,900.0,1050.0,transport,openmc.Cell.temperature,,lin
+axial_refl_T,Axial reflector temperature,G. Thermal state,K,900.0,800.0,1000.0,transport,openmc.Cell.temperature,,lin
+radial_refl_T,Radial reflector temperature,G. Thermal state,K,850.0,700.0,950.0,transport,openmc.Cell.temperature,,lin
+b4c_T,B4C temperature,G. Thermal state,K,850.0,700.0,950.0,transport,openmc.Cell.temperature,,lin
+power_MWth,Thermal power,H. Burnup & reprocessing,MWth,3000.0,2500.0,3500.0,depletion,CoupledOperator/IndependentOperator power,EVOL: 3000 MWth,lin
+capacity_factor,Capacity factor,H. Burnup & reprocessing,-,1.0,0.75,1.0,depletion,Integrator power_density schedule,,lin
+fuel_volume_total,Total fuel salt volume (in + out of core),H. Burnup & reprocessing,m3,18.0,16.0,22.0,depletion,Material.volume,EVOL: 18 m3 (9 m3 in core),lin
+blanket_ext_volume,Out-of-vessel blanket salt volume (processing loop),H. Burnup & reprocessing,m3,0.0,0.0,3.0,depletion,Material.volume (added to the irradiated blanket volume),EVOL quotes 7.3 m3 total; the cylindrical blanket here is 8.25 m3 in-vessel,lin
+gas_cycle_s,Kr/Xe removal cycle (He bubbling),H. Burnup & reprocessing,s,30.0,10.0,300.0,depletion,"Integrator.add_transfer_rate(['Kr','Xe'])",EVOL: T1/2 = 30 s,log
+nm_cycle_s,Noble-metal removal cycle,H. Burnup & reprocessing,s,30.0,30.0,86400.0,depletion,"add_transfer_rate(['Se','Nb','Mo','Tc','Ru','Rh','Pd','Ag','Sb','Te'])",bubbling/plate-out,log
+lan_cycle_d,Lanthanide removal cycle,H. Burnup & reprocessing,d,450.0,100.0,2000.0,depletion,"add_transfer_rate(['Y','La',...,'Er'])",EVOL: 40 L/day -> 450 d,log
+zr_cycle_d,Zr/Cd/In/Sn removal cycle,H. Burnup & reprocessing,d,450.0,100.0,2000.0,depletion,"add_transfer_rate(['Zr','Cd','In','Sn'])",,log
+alk_cycle_d,Rb/Sr/Cs/Ba removal cycle,H. Burnup & reprocessing,d,450.0,200.0,5000.0,depletion,"add_transfer_rate(['Rb','Sr','Cs','Ba'])",,log
+hal_cycle_d,Br/I removal cycle,H. Burnup & reprocessing,d,450.0,60.0,2000.0,depletion,"add_transfer_rate(['Br','I'])",,log
+pa_removal_per_d,Pa extraction rate from fuel,H. Burnup & reprocessing,1/d,0.0,0.0,0.01,depletion,add_transfer_rate(['Pa']),0 in EVOL (no Pa separation),lin
+tru_removal_per_d,Np/Pu/Am/Cm removal rate,H. Burnup & reprocessing,1/d,0.0,0.0,0.00222222,depletion,"add_transfer_rate(['Np','Pu','Am','Cm'])",0 = actinides recycled,lin
+blanket_extract_d,Blanket U+Pa extraction cycle (to fuel),H. Burnup & reprocessing,d,450.0,30.0,1000.0,depletion,"add_transfer_rate(blanket,['U','Pa'],destination_material=fuel)",bred fissile returned to core,log
+th_feed_kgd,Th-232 feed to fuel salt,H. Burnup & reprocessing,kg/d,3.0,0.0,5.0,depletion,"Integrator.add_transfer_rate(fuel,['Th232'],-feed/inventory) (first-order feed, re-based)",replaces burnt heavy metal,lin
+u233_feed_kgd,Net 233U feed (+) / extraction (-) in fuel salt,H. Burnup & reprocessing,kg/d,0.0,-2.0,2.0,depletion,"Integrator.add_transfer_rate(fuel,['U233'],-feed/inventory) (first-order, re-based)",main reactivity-control lever of a breeder,lin
+blanket_th_feed_kgd,Th-232 make-up to blanket,H. Burnup & reprocessing,kg/d,0.0,0.0,3.0,depletion,"Integrator.add_transfer_rate(blanket,['Th232'],-feed/inventory)",,lin
+corrosion_ingress_gd,Corrosion-product ingress to salt,H. Burnup & reprocessing,g/d,0.0,0.0,50.0,depletion,"add_external_source_rate(fuel,{'Ni':..,'Cr':..,'Fe':..})",not combinable with a destination transfer in OpenMC 0.15.3 -> held at 0 in the pilot,lin
+redox_control,Redox buffer control (0 off / 1 on),H. Burnup & reprocessing,-,0.0,0.0,1.0,depletion,"Integrator.add_redox(fuel, buffer, oxidation_states)",keeps F balance as FPs change valence,lin
+substep_days,Depletion sub-step length,H. Burnup & reprocessing,d,30.0,5.0,90.0,depletion,Integrator timesteps,numerical-in-depletion; convergence check,lin
+circ_time_s,Fuel salt loop circulation time,K. Circulating-fuel kinetics,s,4.0,3.0,6.0,kinetics,post-processing of OpenMC beta (delayed-neutron precursor drift),EVOL: 4 s; beta_circ/beta_eff ~0.4-0.54,lin
+particles,Particles per batch,S. Numerical controls,-,5000.0,1000.0,100000.0,numerical,openmc.Settings.particles,pilot vs production statistics,lin
+batches,Total batches,S. Numerical controls,-,60.0,30.0,500.0,numerical,openmc.Settings.batches,,lin
+inactive,Inactive batches,S. Numerical controls,-,15.0,10.0,100.0,numerical,openmc.Settings.inactive,fission-source convergence,lin
+temperature_method,Temperature treatment (0 nearest / 1 interpolation),S. Numerical controls,-,1.0,0.0,1.0,numerical,openmc.Settings.temperature['method'],interpolation only after library audit passes,lin
+temperature_tolerance,Temperature tolerance,S. Numerical controls,K,200.0,10.0,500.0,numerical,openmc.Settings.temperature['tolerance'],,lin
+urr_ptables,Unresolved-resonance probability tables,S. Numerical controls,-,1.0,0.0,1.0,numerical,openmc.Settings.ptables,self-shielding of Th-232 URR,lin
+survival_biasing,Survival biasing,S. Numerical controls,-,0.0,0.0,1.0,numerical,openmc.Settings.survival_biasing,,lin
+weight_cutoff,Russian-roulette weight cutoff,S. Numerical controls,-,0.25,0.05,0.5,numerical,openmc.Settings.cutoff['weight'],,lin
+energy_cutoff,Neutron energy cutoff,S. Numerical controls,eV,0.0,0.0,1.0,numerical,openmc.Settings.cutoff['energy_neutron'],,lin
+source_shape,Initial source (uniform core cylinder),S. Numerical controls,-,0.0,0.0,1.0,numerical,openmc.IndependentSource(constraints={'fissionable':True}),,lin
+entropy_mesh,Shannon-entropy mesh cells,S. Numerical controls,-,0.0,0.0,1000.0,numerical,openmc.Settings.entropy_mesh,source-convergence diagnostic,lin
+seed,Random-number seed,S. Numerical controls,-,1.0,1.0,2147483647.0,numerical,openmc.Settings.seed,fixed seed = correlated sampling between runs,lin
+xs_library,Nuclear data library,S. Numerical controls,-,0.0,0.0,1.0,numerical,OPENMC_CROSS_SECTIONS,ENDF/B-VIII.0 (NNDC HDF5 build),lin
+chain_file,Depletion chain,S. Numerical controls,-,0.0,0.0,1.0,numerical,openmc.deplete chain_file,chain_endf_b8.0_sfr.xml (fast yields),lin
+rr_mode,Reaction-rate mode (direct / flux-collapse),S. Numerical controls,-,1.0,0.0,1.0,numerical,CoupledOperator(reaction_rate_mode),,lin
+mg_structure,Multigroup structure for flux collapse,S. Numerical controls,-,0.0,0.0,1.0,numerical,openmc.mgxs.GROUP_STRUCTURES,,lin
+integrator,Time integrator (Predictor / CE-CM),S. Numerical controls,-,0.0,0.0,1.0,numerical,openmc.deplete.PredictorIntegrator / CECMIntegrator,,lin
+normalization,Power normalisation (fission-q / energy-deposition),S. Numerical controls,-,0.0,0.0,1.0,numerical,Operator(normalization_mode),,lin
+dilute_initial,Initial dilute nuclide density,S. Numerical controls,atom/b-cm,1000.0,0.0,1000000.0,numerical,CoupledOperator(dilute_initial),,lin

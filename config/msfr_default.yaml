@@ -1,0 +1,167 @@
+# =====================================================================================
+#  msrframe - EVOL MSFR design study (default configuration)
+#
+#  Every component below is a plug-in chosen BY NAME. To replace a method just edit
+#  the list, e.g. screening Morris -> Random Forest:
+#       methods: [random_forest, sobol_pce, active_subspace]
+#  List all available plug-ins:  python -m msrframe list
+#  Add your own:                 see examples/custom_plugin.py, then add it to plugins:
+#
+#  Training data are plain CSV files. Drop new OpenMC results into data/user/ (or use
+#  "python -m msrframe add-data") and re-run - every model, metric and chart updates.
+# =====================================================================================
+project: EVOL MSFR design framework (trainable)
+root: ..                       # paths below are relative to the project root
+output_dir: results
+seed: 2026
+catalogue: data/catalogue.csv  # 100-parameter MSFR catalogue: bounds, nominal, class
+plugins: []                    # e.g. [examples/custom_plugin.py]
+
+# ------------------------------------------------------------------ Stage 1: screening
+screening:
+  enabled: true
+  data: [data/screening_runs_demo.csv, data/user/screening_*.csv]   # DEMO data: replace with OpenMC runs
+  inputs: auto                 # every catalogue parameter present in the data
+  output: keff
+  n_dummies: 3                 # used only if the data has no dummy_* columns
+  methods:                     # any of: morris sobol_pce active_subspace random_forest gbt_importance
+    - morris                   #   permutation sobol_surrogate dgsm mutual_info spearman src lasso
+    - sobol_pce
+    - active_subspace
+  threshold: {dummy_factor: 2.0, min_share: 0.005}   # keep if score > 2 x max dummy score
+  consensus:
+    min_votes: 2               # retained by >= 2 of the methods ...
+    forced:                    # ... plus safety-relevant parameters
+      fuel_inlet_T: fuel temperature -> Doppler + density feedback coefficient
+      fuel_density_mult: fuel density -> density/void feedback
+  validation:
+    surrogate: {name: gp, restarts: 0}
+    top_m: [1, 2, 3, 5, 7, 10, 16]
+    folds: 5
+
+# ------------------------------------------------------------------ Stage 2: k_eff predictor
+keff:
+  enabled: true
+  data: [data/keff_campaign.csv, data/user/keff_*.csv]   # 200 pilot OpenMC runs + yours
+  inputs: [uf4_molpct, u238_pct, hn_molpct, u234_pct, li7_enrich, core_radius, u236_pct, fuel_inlet_T, fuel_density_mult]
+  # inputs: from_screening     # <- use Stage 1's consensus set instead
+  output: keff
+  output_std: keff_std         # OpenMC standard deviation (optional; enables noise-corrected RMSE)
+  params:
+    fuel_density_mult: {low: 0.97, high: 1.03, nominal: 1.0}
+  models:                      # any surrogate: gp dnn gbt random_forest extra_trees pce svr krr
+    - gp                       #   poly_ridge linear knn ensemble (xgboost if installed)
+    - dnn
+    - gbt
+    - random_forest
+    - pce
+  deploy: best                 # or a model label, e.g. gp
+  validation: {folds: 5}
+  learning_curve: {fractions: [0.15, 0.3, 0.5, 0.75, 1.0]}
+  derived:
+    critical: uf4_molpct       # solve k_eff(uf4) = 1 with the other inputs at nominal
+    coefficients: [fuel_inlet_T, fuel_density_mult]   # d(rho)/dx at nominal
+
+# ------------------------------------------------------------------ Stage 3: burnup predictor
+burnup:
+  enabled: true
+  data: [data/burnup_histories.csv, data/user/burnup_*.csv]   # 60 pilot histories + yours
+  inputs: [uf4_molpct, power_MWth, u233_feed_kgd, th_feed_kgd, lan_cycle_d, nm_cycle_s, gas_cycle_s, alk_cycle_d, zr_cycle_d]
+  outputs: [keff, U233_fuel_kg, fissile_total_kg, Pa233_fuel_kg, FP_fuel_kg, Lan_fuel_kg, HN_molpct, Th232_fuel_kg]
+  output_labels:
+    {keff: k_eff, U233_fuel_kg: 233U fuel, fissile_total_kg: fissile total, Pa233_fuel_kg: 233Pa, FP_fuel_kg: FPs, Lan_fuel_kg: lanthanides,
+      HN_molpct: HN mol%, Th232_fuel_kg: 232Th}
+  params:
+    uf4_molpct: {low: 2.2, high: 2.9, nominal: 2.515, log: false, name: Fissile loading (233UF4), unit: mol%}
+    power_MWth: {low: 2500.0, high: 3500.0, nominal: 3000.0, log: false, name: Thermal power, unit: MWth}
+    u233_feed_kgd: {low: -0.8, high: 0.8, nominal: 0.0, log: false, name: Net 233U feed (+) / extraction (-) in fuel salt, unit: kg/d}
+    th_feed_kgd: {low: 2.0, high: 4.5, nominal: 3.0, log: false, name: Th-232 feed to fuel salt, unit: kg/d}
+    lan_cycle_d: {low: 100.0, high: 20000.0, nominal: 450.0, log: true, name: Lanthanide removal cycle, unit: d}
+    nm_cycle_s: {low: 30.0, high: 10000000.0, nominal: 30.0, log: true, name: Noble-metal removal cycle, unit: s}
+    gas_cycle_s: {low: 10.0, high: 100000.0, nominal: 30.0, log: true, name: Kr/Xe removal cycle (He bubbling), unit: s}
+    alk_cycle_d: {low: 200.0, high: 20000.0, nominal: 450.0, log: true, name: Rb/Sr/Cs/Ba removal cycle, unit: d}
+    zr_cycle_d: {low: 100.0, high: 20000.0, nominal: 450.0, log: true, name: Zr/Cd/In/Sn removal cycle, unit: d}
+  models:                      # trajectory model + ANY scalar surrogate as its base
+    - {name: pca, base: gp}
+    - {name: pca, base: {name: dnn, members: 3, hidden: [32, 32], max_iter: 1500}, label: "pca:dnn"}
+    - {name: time_input, base: gbt}
+    - {name: pca, base: {name: random_forest, n_estimators: 200}, label: "pca:random_forest"}
+  deploy: best
+  validation: {folds: 5}
+
+# ------------------------------------------------------------------ Stage 4: fuel-cycle optimiser
+optimize:
+  enabled: true
+  surrogate: deployed          # or a burnup model label, e.g. "pca:gp"
+  optimizers: [differential_evolution, pso, nelder_mead]   # also: dual_annealing random_search bayesian
+  budget: 2500                 # cost evaluations per optimiser and scenario
+  # controls: fixed value | [low, high] -> optimised | off (removal disabled)
+  scenarios:
+    - name: s1_hold_critical_evol
+      title: Hold critical for 18 years with EVOL lanthanide processing
+      horizon_y: 18
+      eval_start_y: 1.0
+      rho_target_pcm: 0
+      rho_tol_pcm: 400
+      uncertainty_k: 1.0
+      controls:
+        power_MWth: 3000
+        gas_cycle_s: [10, 300]
+        nm_cycle_s: [30, 86400]
+        lan_cycle_d: 450
+        zr_cycle_d: [180, 2000]
+        alk_cycle_d: [300, 5000]
+        u233_feed_kgd: [-0.8, 0.8]
+        th_feed_kgd: [2.0, 4.5]
+        uf4_molpct: [2.2, 2.9]
+      limits: {hn_max_molpct: 25.0, fissile_max_kg: 7000, alpha_T_pcm_per_K: -6.9, dT_up_K: 50, dT_down_K: 50}
+    - name: s2_no_lanthanide_removal
+      title: Same plan with lanthanide processing unavailable
+      horizon_y: 18
+      eval_start_y: 1.0
+      rho_target_pcm: 0
+      rho_tol_pcm: 400
+      uncertainty_k: 1.0
+      controls:
+        power_MWth: 3000
+        gas_cycle_s: [10, 300]
+        nm_cycle_s: [30, 86400]
+        lan_cycle_d: 'off'
+        zr_cycle_d: [180, 2000]
+        alk_cycle_d: [300, 5000]
+        u233_feed_kgd: [-0.8, 0.8]
+        th_feed_kgd: [2.0, 4.5]
+        uf4_molpct: [2.2, 2.9]
+      limits: {hn_max_molpct: 25.0, fissile_max_kg: 7000, alpha_T_pcm_per_K: -6.9, dT_up_K: 50, dT_down_K: 50}
+    - name: s3_max_breeding
+      title: Extract as much bred 233U as criticality allows (30 years)
+      horizon_y: 30
+      eval_start_y: 1.0
+      rho_target_pcm: 0
+      rho_tol_pcm: 400
+      uncertainty_k: 1.0
+      controls:
+        power_MWth: 3000
+        gas_cycle_s: [10, 300]
+        nm_cycle_s: [30, 86400]
+        lan_cycle_d: 450
+        zr_cycle_d: 450
+        alk_cycle_d: 450
+        u233_feed_kgd: [-0.8, 0.3]
+        th_feed_kgd: [2.0, 4.5]
+        uf4_molpct: [2.2, 2.9]
+      limits: {hn_max_molpct: 25.0, fissile_max_kg: 7000, alpha_T_pcm_per_K: -6.9, dT_up_K: 50, dT_down_K: 50}
+      weights: {u233_extraction: 4.0}
+
+# ------------------------------------------------------------------ active learning (python -m msrframe loop)
+#   Your OpenMC driver reads {inp} (CSV of inputs) and writes {out} (same rows + keff, keff_std).
+#   For a self-contained demo with the analytic stand-in use config/demo_active_learning.yaml
+#   (it keeps its synthetic data separate from the real OpenMC database).
+active_learning:
+  simulator: {name: command, command: "python my_openmc_driver.py {inp} {out}"}
+  models: [gp, random_forest]
+  acquisition_model: gp
+  batch: 10
+  iterations: 5
+  compare_random: true
+  persist: true                # write each batch to data/user/ (set false for a dry run)

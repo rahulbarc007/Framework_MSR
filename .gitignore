@@ -1,0 +1,7 @@
+__pycache__/
+*.pyc
+results*/models/
+results*/history/
+results*/al_batch_*.csv
+.pytest_cache/
+data/demo_al/keff_active*.csv
