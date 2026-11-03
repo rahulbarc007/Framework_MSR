@@ -1,0 +1,102 @@
+{
+ "n_runs": 476,
+ "n_inputs": 61,
+ "methods": [
+  "morris",
+  "sobol_pce",
+  "active_subspace"
+ ],
+ "retained": {
+  "morris": [
+   "u238_pct",
+   "uf4_molpct",
+   "hn_molpct",
+   "u234_pct",
+   "li7_enrich",
+   "u236_pct",
+   "core_radius",
+   "fuel_density_mult",
+   "pa233_ppm"
+  ],
+  "sobol_pce": [
+   "u238_pct",
+   "uf4_molpct",
+   "hn_molpct",
+   "u234_pct",
+   "li7_enrich",
+   "u236_pct",
+   "core_radius"
+  ],
+  "active_subspace": [
+   "u238_pct",
+   "uf4_molpct",
+   "hn_molpct",
+   "u234_pct",
+   "li7_enrich",
+   "u236_pct"
+  ]
+ },
+ "consensus": [
+  "u238_pct",
+  "uf4_molpct",
+  "hn_molpct",
+  "u234_pct",
+  "li7_enrich",
+  "u236_pct",
+  "core_radius",
+  "fuel_inlet_T",
+  "fuel_density_mult"
+ ],
+ "forced": {
+  "fuel_inlet_T": "fuel temperature -> Doppler + density feedback coefficient",
+  "fuel_density_mult": "fuel density -> density/void feedback"
+ },
+ "min_votes": 2,
+ "final_cv_rmse_pcm": 660.8221745255563,
+ "final_cv_r2": 0.9936122233872072,
+ "info": {
+  "morris": {
+   "units": "mu* (pcm)",
+   "time_s": 0.0031244754791259766,
+   "threshold": 989.8184527343838,
+   "dummy_max": 494.9092263671919,
+   "n_kept": 9,
+   "dummy_separation": 2.600722523652906,
+   "extra": {},
+   "mode": "design"
+  },
+  "sobol_pce": {
+   "units": "S_T",
+   "time_s": 0.0895228385925293,
+   "threshold": 0.00021328056583942172,
+   "dummy_max": 0.00010664028291971086,
+   "n_kept": 7,
+   "dummy_separation": 52.76181320447205,
+   "extra": {
+    "terms": 65,
+    "degree": 1
+   },
+   "mode": ""
+  },
+  "active_subspace": {
+   "units": "activity",
+   "time_s": 42.9412522315979,
+   "threshold": 4.121161582875367e-05,
+   "dummy_max": 2.0605807914376835e-05,
+   "n_kept": 6,
+   "dummy_separation": 408.3794022871201,
+   "extra": {
+    "n_active": 1,
+    "eig_top5": [
+     599384706.9354876,
+     1059642.527069222,
+     456889.8631065343,
+     371389.63314223284,
+     21518.292889757962
+    ],
+    "eigen_gap": 565.6480290511522
+   },
+   "mode": ""
+  }
+ }
+}

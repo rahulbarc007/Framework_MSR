@@ -346,6 +346,12 @@ class Ensemble(Surrogate):
     def _fit(self, U, y):
         from ..registry import create
         self.members = [create("surrogate", s, seed=self.seed).fit(U, y) for s in self.params.get("members", ["gp", "dnn"])]
+        nz = [m.noise_sd for m in self.members if m.noise_sd > 0]
+        self._noise = float(np.mean(nz)) if nz else 0.0
+
+    @property
+    def noise_sd(self):
+        return getattr(self, "_noise", 0.0)
 
     def _predict(self, U, s):
         R = [m.predict(U, return_std=True) for m in self.members]

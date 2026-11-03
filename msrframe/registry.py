@@ -90,10 +90,16 @@ def available(kind: str | None = None):
 
 def load_plugin_file(path: str | Path):
     """Import a user python file (or dotted module) that calls :func:`register`."""
+    import sys
     p = Path(path)
     if p.suffix == ".py" and p.exists():
+        if p.stem in sys.modules:
+            return sys.modules[p.stem]
+        if str(p.parent.resolve()) not in sys.path:   # so trained models using it can be unpickled
+            sys.path.insert(0, str(p.parent.resolve()))
         spec = importlib.util.spec_from_file_location(p.stem, p)
         mod = importlib.util.module_from_spec(spec)
+        sys.modules[p.stem] = mod
         spec.loader.exec_module(mod)
         return mod
     return importlib.import_module(str(path))

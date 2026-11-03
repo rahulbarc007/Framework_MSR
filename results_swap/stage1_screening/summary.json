@@ -1,0 +1,106 @@
+{
+ "n_runs": 476,
+ "n_inputs": 61,
+ "methods": [
+  "random_forest",
+  "sobol_pce",
+  "sobol_surrogate:dnn",
+  "spearman"
+ ],
+ "retained": {
+  "random_forest": [
+   "u238_pct",
+   "uf4_molpct",
+   "hn_molpct",
+   "alloy_Mn",
+   "u234_pct"
+  ],
+  "sobol_pce": [
+   "u238_pct",
+   "uf4_molpct",
+   "hn_molpct",
+   "u234_pct",
+   "li7_enrich",
+   "u236_pct",
+   "core_radius"
+  ],
+  "sobol_surrogate:dnn": [
+   "u238_pct",
+   "uf4_molpct",
+   "hn_molpct",
+   "u234_pct",
+   "li7_enrich",
+   "u236_pct",
+   "core_radius"
+  ],
+  "spearman": [
+   "u238_pct",
+   "blanket_u233_molpct",
+   "b10_enrich",
+   "hn_molpct"
+  ]
+ },
+ "consensus": [
+  "u238_pct",
+  "hn_molpct",
+  "uf4_molpct",
+  "u234_pct",
+  "u236_pct",
+  "li7_enrich",
+  "core_radius",
+  "fuel_inlet_T",
+  "fuel_density_mult"
+ ],
+ "forced": {
+  "fuel_inlet_T": "Doppler feedback",
+  "fuel_density_mult": "density feedback"
+ },
+ "min_votes": 2,
+ "final_cv_rmse_pcm": 660.8221748372974,
+ "final_cv_r2": 0.9936122233811804,
+ "info": {
+  "random_forest": {
+   "units": "dMSE / Var",
+   "time_s": 60.58916425704956,
+   "threshold": 0.00021816726330085813,
+   "dummy_max": 0.00010908363165042906,
+   "n_kept": 5,
+   "dummy_separation": 114.21382721295322,
+   "extra": {},
+   "mode": ""
+  },
+  "sobol_pce": {
+   "units": "S_T",
+   "time_s": 0.08009099960327148,
+   "threshold": 0.00021328056583942172,
+   "dummy_max": 0.00010664028291971086,
+   "n_kept": 7,
+   "dummy_separation": 52.76181320447205,
+   "extra": {
+    "terms": 65,
+    "degree": 1
+   },
+   "mode": ""
+  },
+  "sobol_surrogate:dnn": {
+   "units": "S_T",
+   "time_s": 8.190140008926392,
+   "threshold": 0.00016497997501065454,
+   "dummy_max": 8.248998750532727e-05,
+   "n_kept": 7,
+   "dummy_separation": 65.88957055750843,
+   "extra": {},
+   "mode": ""
+  },
+  "spearman": {
+   "units": "rho^2",
+   "time_s": 0.026230573654174805,
+   "threshold": 0.2985380964502833,
+   "dummy_max": 0.14926904822514164,
+   "n_kept": 4,
+   "dummy_separation": 2.4095169300672246,
+   "extra": {},
+   "mode": ""
+  }
+ }
+}

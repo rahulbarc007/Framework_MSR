@@ -1,0 +1,4 @@
+pair,jaccard,spearman_all,spearman_top
+morris vs sobol_pce,0.7777777777777778,0.6322051824431517,1.0
+morris vs active_subspace,0.6666666666666666,0.6997884717080908,1.0
+sobol_pce vs active_subspace,0.8571428571428571,0.9203595980962453,1.0

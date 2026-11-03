@@ -164,7 +164,7 @@ class Permutation(ScreeningMethod):
     def run(self, ctx):
         from sklearn.model_selection import KFold
         folds = self.params.get("folds", 5)
-        reps = self.params.get("repeats", 5)
+        reps = self.params.get("repeats", 3)
         rng = np.random.default_rng(self.seed)
         k = ctx.U.shape[1]
         imp = np.zeros(k)
@@ -184,7 +184,7 @@ class Permutation(ScreeningMethod):
 
 @register("screening", "random_forest", "Random-forest permutation importance (drop-in replacement for Morris)")
 class RFImportance(Permutation):
-    default_model = "random_forest"
+    default_model = {"name": "random_forest", "n_estimators": 200}
 
     def run(self, ctx):
         if self.params.get("importance", "permutation") == "impurity":

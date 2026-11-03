@@ -1,0 +1,110 @@
+{
+ "n_histories": 60,
+ "times": [
+  0.0,
+  0.25,
+  0.5,
+  0.75,
+  1.0,
+  1.5,
+  2.0,
+  2.5,
+  3.0,
+  3.5,
+  4.0,
+  4.5,
+  5.0,
+  7.0,
+  9.0,
+  11.0,
+  13.0,
+  15.0,
+  18.0,
+  21.0,
+  24.0,
+  27.0,
+  30.0
+ ],
+ "inputs": [
+  "uf4_molpct",
+  "power_MWth",
+  "u233_feed_kgd",
+  "th_feed_kgd",
+  "lan_cycle_d",
+  "nm_cycle_s",
+  "gas_cycle_s",
+  "alk_cycle_d",
+  "zr_cycle_d"
+ ],
+ "outputs": [
+  "keff",
+  "U233_fuel_kg",
+  "fissile_total_kg",
+  "Pa233_fuel_kg",
+  "FP_fuel_kg",
+  "Lan_fuel_kg",
+  "HN_molpct",
+  "Th232_fuel_kg"
+ ],
+ "ranking": [
+  "pca:gp",
+  "pca:dnn",
+  "time_input:gbt",
+  "pca:random_forest"
+ ],
+ "deployed": "pca:gp",
+ "metrics": [
+  {
+   "model": "pca:gp",
+   "keff_rmse_pcm": 488.09567165697564,
+   "keff_max_pcm": 2001.3672973191676,
+   "keff_coverage95": 0.8782608695652174,
+   "U233_fuel_kg_rel_rmse_%": 0.3180136185660084,
+   "fissile_total_kg_rel_rmse_%": 0.3558804323678645,
+   "Pa233_fuel_kg_rel_rmse_%": 0.25784088919867487,
+   "FP_fuel_kg_rel_rmse_%": 12.251907928966444,
+   "Lan_fuel_kg_rel_rmse_%": 5.50007697991912,
+   "HN_molpct_rel_rmse_%": 0.07293482655957506,
+   "Th232_fuel_kg_rel_rmse_%": 0.08295668551356274
+  },
+  {
+   "model": "pca:dnn",
+   "keff_rmse_pcm": 551.6268464295819,
+   "keff_max_pcm": 2146.636225247611,
+   "keff_coverage95": 0.5644927536231884,
+   "U233_fuel_kg_rel_rmse_%": 0.7066926026207297,
+   "fissile_total_kg_rel_rmse_%": 0.6783729797264675,
+   "Pa233_fuel_kg_rel_rmse_%": 0.5034564575091599,
+   "FP_fuel_kg_rel_rmse_%": 28.798491632133228,
+   "Lan_fuel_kg_rel_rmse_%": 18.162788975431912,
+   "HN_molpct_rel_rmse_%": 0.2343433947695555,
+   "Th232_fuel_kg_rel_rmse_%": 0.2632672461167793
+  },
+  {
+   "model": "time_input:gbt",
+   "keff_rmse_pcm": 1231.2451796705525,
+   "keff_max_pcm": 5811.79675819149,
+   "keff_coverage95": NaN,
+   "U233_fuel_kg_rel_rmse_%": 3.272903706386563,
+   "fissile_total_kg_rel_rmse_%": 3.0347414002411517,
+   "Pa233_fuel_kg_rel_rmse_%": 5.238586842477405,
+   "FP_fuel_kg_rel_rmse_%": 36.540392764570036,
+   "Lan_fuel_kg_rel_rmse_%": 20.662937836820078,
+   "HN_molpct_rel_rmse_%": 2.140979658341742,
+   "Th232_fuel_kg_rel_rmse_%": 2.9143285590634362
+  },
+  {
+   "model": "pca:random_forest",
+   "keff_rmse_pcm": 1636.097709374536,
+   "keff_max_pcm": 7106.8788435483475,
+   "keff_coverage95": 0.9601449275362319,
+   "U233_fuel_kg_rel_rmse_%": 5.415000889830663,
+   "fissile_total_kg_rel_rmse_%": 5.02117807481466,
+   "Pa233_fuel_kg_rel_rmse_%": 7.239792618288976,
+   "FP_fuel_kg_rel_rmse_%": 48.106600905556206,
+   "Lan_fuel_kg_rel_rmse_%": 22.943868163076317,
+   "HN_molpct_rel_rmse_%": 3.6333697725133396,
+   "Th232_fuel_kg_rel_rmse_%": 4.996595085785263
+  }
+ ]
+}
