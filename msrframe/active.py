@@ -54,11 +54,8 @@ def _acquisition(stage, cfg, U_pool, X_pool, how):
 def suggest(cfg, stage="keff", n=20, how="hybrid", pool=20000, out_file=None):
     st = cfg[stage]
     df = load_stage_data(cfg, stage)
-    if stage == "keff":
-        from .stages.keff import resolve_inputs
-        keys = resolve_inputs(cfg, st)
-    else:
-        keys = list(st["inputs"])
+    from .data import resolve_inputs
+    keys = resolve_inputs(cfg, stage)
     space = cfg.space(stage, keys, df)
     Upool = get("sampler", "lhs")(pool, len(keys), seed=cfg["seed"] + len(df))
     Xpool = space.from_unit(Upool)

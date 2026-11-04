@@ -30,3 +30,4 @@ active_learning:
   iterations: 6
   compare_random: true
   persist: true
+dashboard: {enabled: true, keff_models: top3}

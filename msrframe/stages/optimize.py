@@ -126,7 +126,7 @@ def run(cfg):
     R["verdict"] = " ".join(
         f"{r['sc'].get('title', r['sc']['name'])}: {r['ev']['status']} (RMS deviation {r['ev']['track']:.0f} pcm, best optimiser {r['opt']})."
         for r in results) + " Controls are exported to verify_in_openmc.csv for transport verification."
-    write_json(out / "summary.json", R["summary"])
+    write_json(out / "summary.json", {**R["summary"], "verdict": R["verdict"]})
     return R
 
 

@@ -22,12 +22,7 @@ def run(cfg):
     R = StageResult("screening", "Stage 1 - Parameter screening")
     seed = cfg["seed"]
 
-    if st.get("inputs") in (None, "auto"):
-        from ..data import _files
-        df0 = pd.read_csv(_files(cfg, st["data"])[0], nrows=5)
-        cat = cfg.catalogue()
-        st["inputs"] = [k for k in cat["key"] if k in df0.columns]
-    df = load_stage_data(cfg, "screening")
+    df = load_stage_data(cfg, "screening")          # resolves inputs: auto -> catalogue keys in the data
     keys = list(st["inputs"])
     space = cfg.space("screening", keys, df)
     U = space.to_unit(df[keys].to_numpy(float))
@@ -158,7 +153,7 @@ def run(cfg):
         f"keeps {len(final)} inputs: {', '.join(final)}. "
         + (f"A GP on this set reaches {final_cv['rmse']:.0f} pcm CV RMSE (R2 = {final_cv['r2']:.4f}). " if final_cv else "")
         + (f"Lowest retention-curve error: {best}." if len(curves) else ""))
-    write_json(out / "summary.json", R["summary"])
+    write_json(out / "summary.json", {**R["summary"], "verdict": R["verdict"]})
     return R
 
 

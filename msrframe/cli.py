@@ -7,6 +7,7 @@
   loop         closed active-learning loop (suggest -> simulate -> add -> retrain)
   predict      predict k_eff (or burnup trajectories) for points in a CSV with a trained model
   design       generate an input design (lhs / sobol / morris ...) to run in OpenMC
+  dashboard    build the interactive HTML studio (models run in the browser) from the trained study
 """
 from __future__ import annotations
 
@@ -37,7 +38,7 @@ def _sets(s):
 def main(argv=None):
     ap = argparse.ArgumentParser(prog="msrframe", description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     sub = ap.add_subparsers(dest="cmd", required=True)
-    for name in ("run", "add-data", "suggest", "loop", "predict", "design", "list"):
+    for name in ("run", "add-data", "suggest", "loop", "predict", "design", "list", "dashboard"):
         p = sub.add_parser(name)
         p.add_argument("--config", "-c", default="config/msfr_default.yaml")
         p.add_argument("--set", action="append", help="override a config value, e.g. screening.methods=[random_forest,sobol_pce]")
@@ -56,6 +57,10 @@ def main(argv=None):
         if name == "predict":
             p.add_argument("--model", default="deployed")
             p.add_argument("--out", default=None)
+        if name == "dashboard":
+            p.add_argument("--keff-models", default=None, help="top3 (default) | all | topN | comma-separated labels, e.g. gp,dnn,pce")
+            p.add_argument("--burnup-models", default=None, help="top3 (default) | all | topN | labels, e.g. pca:gp,time_input:gbt")
+            p.add_argument("--out", default=None, help="output HTML file (default results/dashboard.html)")
         if name == "design":
             p.add_argument("--sampler", default="lhs")
             p.add_argument("-n", type=int, default=100)
@@ -74,6 +79,9 @@ def main(argv=None):
     if a.cmd == "run":
         from .pipeline import run_pipeline
         run_pipeline(cfg, a.stages, tag=a.tag)
+    elif a.cmd == "dashboard":
+        from .dashboard import build_dashboard
+        build_dashboard(cfg, a.keff_models, a.burnup_models, a.out)
     elif a.cmd == "add-data":
         from .data import add_data
         add_data(cfg, a.stage, a.file)
@@ -91,6 +99,8 @@ def main(argv=None):
         R = keff.run(cfg, tag="after-loop")
         from .report import write_report
         print("report ->", write_report(cfg, [R], extra_figs={"Active learning": [(fig, "Active (uncertainty-driven) vs random new runs.")]}))
+        from .pipeline import maybe_dashboard
+        maybe_dashboard(cfg)
     elif a.cmd == "predict":
         from .stages.common import load_model
         P = load_model(cfg.out / "models" / f"{a.stage}_{a.model.replace(':', '_')}.pkl")
@@ -113,10 +123,8 @@ def main(argv=None):
         print(f"-> {out}  (model {P.label})")
     elif a.cmd == "design":
         from .registry import get
-        st = cfg[a.stage]
-        keys = st["inputs"] if isinstance(st.get("inputs"), list) else None
-        if keys is None:
-            raise SystemExit("design: list the stage inputs explicitly in the config")
+        from .data import resolve_inputs
+        keys = resolve_inputs(cfg, a.stage)
         space = cfg.space(a.stage, keys)
         if a.sampler == "morris":
             U, tr = get("sampler", "morris")(a.n, len(keys) + 3, seed=cfg["seed"])

@@ -23,15 +23,10 @@ class KeffPredictor:
         return self.model.predict(self.space.to_unit(X), return_std=return_std)
 
 
-def resolve_inputs(cfg, st):
-    inp = st.get("inputs", "from_screening")
-    if inp == "from_screening":
-        import json
-        p = cfg.out / "stage1_screening" / "summary.json"
-        if not p.exists():
-            raise FileNotFoundError("keff.inputs = from_screening but Stage 1 has not been run; run it or list inputs")
-        st["inputs"] = json.loads(p.read_text())["consensus"]
-    return list(st["inputs"])
+def resolve_inputs(cfg, st=None):
+    """Kept for backwards compatibility; see :func:`msrframe.data.resolve_inputs`."""
+    from ..data import resolve_inputs as _resolve
+    return _resolve(cfg, "keff")
 
 
 def run(cfg, models_override=None, quiet=False, tag=None):
@@ -166,7 +161,7 @@ def run(cfg, models_override=None, quiet=False, tag=None):
         + f"Worst: {w.model} ({w.rmse:.0f} pcm). "
         + (f"Learning curves show the error of {b.model} falling from {lc[lc.model == b.model].rmse.iloc[0]:.0f} to "
            f"{lc[lc.model == b.model].rmse.iloc[-1]:.0f} pcm as training data grow - adding OpenMC runs keeps improving it." if len(lc) else ""))
-    write_json(out / "summary.json", R["summary"])
+    write_json(out / "summary.json", {**R["summary"], "verdict": R["verdict"]})
     return R
 
 

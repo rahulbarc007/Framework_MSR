@@ -57,5 +57,6 @@
     "gas_cycle_s": 10.0
    }
   }
- ]
+ ],
+ "verdict": "Hold critical for 18 years with EVOL lanthanide processing: feasible (RMS deviation 94 pcm, best optimiser nelder_mead). Same plan with lanthanide processing unavailable: mean inside band, not certified at 1.0 sigma (RMS deviation 102 pcm, best optimiser differential_evolution). Extract as much bred 233U as criticality allows (30 years): mean inside band, not certified at 1.0 sigma (RMS deviation 136 pcm, best optimiser nelder_mead). Controls are exported to verify_in_openmc.csv for transport verification."
 }

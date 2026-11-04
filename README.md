@@ -18,7 +18,10 @@ control) and adds two things:
    ```
 
 Every run prints its tables to the console and writes **charts (PNG) + CSV tables + a
-self-contained HTML report** (`results/report.html`, one tab per stage).
+self-contained HTML report** (`results/report.html`, one tab per stage). It also writes an
+**interactive design studio**, `results/dashboard.html`, in which the trained models run in the
+browser: k_eff sliders, burnup trajectories, the fuel-cycle optimiser and the accuracy history
+(see [Interactive dashboard](#interactive-dashboard)).
 
 ## Quick start
 
@@ -47,6 +50,47 @@ python -m msrframe run -c config/msfr_default.yaml --stages screening --set "scr
 ```bash
 python -m msrframe run -c config/swap_example.yaml          # a whole alternative plug-in set
 ```
+
+## Interactive dashboard
+
+`results/dashboard.html` is one self-contained file, like the original EVOL MSFR studio. It
+needs no Python, server or internet connection, so you can e-mail it or open it offline. It is
+rebuilt from the current models and data by every `msrframe run`, `add-data --retrain` and
+`loop`. You can also rebuild it on its own:
+
+```bash
+python -m msrframe dashboard -c config/msfr_default.yaml
+```
+
+```bash
+python -m msrframe dashboard -c config/msfr_default.yaml --keff-models gp,random_forest,svr --burnup-models pca:gp
+```
+
+| Tab | What you can do |
+|---|---|
+| Stage 1 · Parameter screening | Compare the configured methods: importance of every parameter (log scale, kept vs dropped, dummy noise floor), retention curves, agreement, the reduced set, and a searchable 100-parameter catalogue |
+| Stage 2 · k_eff predictor | Move any input and every embedded model answers instantly, with ±σ. Sweep one input through the current point, solve k_eff = 1 for any input, see local sensitivities (dρ/dx), load an OpenMC run and compare it with the cross-validated prediction. Parity plots, learning curves and the accuracy table are included. |
+| Stage 3 · Burnup predictor | 30-year trajectories of every output for any operating point. Load an OpenMC history to overlay it, together with the prediction of a model that never saw that history. |
+| Stage 4 · Fuel-cycle optimiser | Scenario presets from the config. Each control can be set to optimise, fixed or off, and the safety limits are editable. Differential evolution runs in the browser on the chosen burnup model or the ensemble. You can re-evaluate the Python optimum and download the controls as CSV for OpenMC verification. |
+| Data & accuracy | Training files (yours highlighted), accuracy against database size across training sessions, the active-learning curve, suggested next OpenMC runs, and how to add data |
+
+**Which models are embedded.** `dashboard.keff_models` / `dashboard.burnup_models` in the
+config: `top3` (default, best by cross-validation), `all`, `topN`, or a list of labels.
+
+**Exact in the browser.** Built-in models (GP, DNN ensembles, gradient-boosted trees, random
+forest / extra trees, PCE, quadratic and linear Bayesian ridge, k-NN, SVR, kernel ridge,
+ensembles, and the PCA / time-input / per-time trajectory wrappers) are exported to JSON and
+re-implemented in JavaScript. The browser gives the same k_eff as Python, within 2·10⁻⁴ pcm,
+which `tests/test_dashboard.py` checks in Node.
+
+**Distillation.** A model the exporter does not know, such as your own plug-in or xgboost, is
+re-learned by a small student model from its own predictions. The student is a sparse
+polynomial chaos expansion, or a small neural network if that fits better. The error of the
+student is shown in the *Data & accuracy* tab. To export a plug-in exactly instead, give it a
+`to_json()` method that returns one of the formats in `msrframe/export.py`.
+
+**Size.** The default study gives a page of about 3.6 MB. Large forests make larger pages, and
+the builder warns above 15 MB.
 
 ## The four stages
 
@@ -96,6 +140,8 @@ sampling.
 
 **Design generation.** `python -m msrframe design --stage keff --sampler lhs -n 100` (or
 `sobol`, `halton`, `morris` with dummy columns) writes input decks to run in OpenMC.
+
+**Rebuilding the dashboard.** `python -m msrframe dashboard -c <config>` (see above).
 
 **Using a trained model.** This command predicts k_eff (with σ) or burnup trajectories for any CSV of design points:
 

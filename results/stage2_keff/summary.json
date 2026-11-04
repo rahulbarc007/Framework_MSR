@@ -30,7 +30,7 @@
    "rmse_noise_corrected": 195.27846191722446,
    "coverage95": 0.945,
    "z_std": 1.0123493543211344,
-   "fit_time_s": 1.9786463737487794
+   "fit_time_s": 1.602384662628174
   },
   "dnn": {
    "rmse": 331.83694086361254,
@@ -42,7 +42,7 @@
    "rmse_noise_corrected": 266.77016592094964,
    "coverage95": 0.28,
    "z_std": 6.507032436524076,
-   "fit_time_s": 3.4051918029785155
+   "fit_time_s": 4.501183891296387
   },
   "gbt": {
    "rmse": 1721.3574375630171,
@@ -52,7 +52,7 @@
    "r2": 0.937010613275475,
    "mc_noise_rms": 197.35610934609977,
    "rmse_noise_corrected": 1710.00643096957,
-   "fit_time_s": 0.341581916809082
+   "fit_time_s": 0.30039281845092775
   },
   "random_forest": {
    "rmse": 2546.523094477823,
@@ -64,7 +64,7 @@
    "rmse_noise_corrected": 2538.8640051827665,
    "coverage95": 0.97,
    "z_std": 0.783336607488675,
-   "fit_time_s": 0.6817584037780762
+   "fit_time_s": 0.6558139801025391
   },
   "pce": {
    "rmse": 366.2637598824337,
@@ -76,7 +76,7 @@
    "rmse_noise_corrected": 308.54449907102116,
    "coverage95": 0.69,
    "z_std": 2.2197914830487115,
-   "fit_time_s": 0.31145248413085935
+   "fit_time_s": 0.287046480178833
   }
  },
  "holdout": [
@@ -177,5 +177,6 @@
    "drho/dfuel_inlet_T (pcm/K)": -9.140498713096212,
    "drho/dfuel_density_mult (pcm/-)": 17638.56466620858
   }
- ]
+ ],
+ "verdict": "Best k_eff surrogate on 200 runs: gp with 278 pcm cross-validated RMSE (R2 = 0.99836, 95% interval coverage 94%). The Monte Carlo noise of the targets is 197 pcm rms, so part of every error is OpenMC noise. Worst: random_forest (2547 pcm). Learning curves show the error of gp falling from 408 to 262 pcm as training data grow - adding OpenMC runs keeps improving it."
 }

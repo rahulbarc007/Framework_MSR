@@ -28,7 +28,7 @@
    "rmse_noise_corrected": 206.55223344265545,
    "coverage95": 0.9222222222222223,
    "z_std": 1.0980408182213413,
-   "fit_time_s": 0.4193460464477539
+   "fit_time_s": 0.36152033805847167
   },
   "dnn": {
    "rmse": 490.8613145485955,
@@ -40,7 +40,7 @@
    "rmse_noise_corrected": 403.16848850124086,
    "coverage95": 0.4222222222222222,
    "z_std": 4.709138450951007,
-   "fit_time_s": 0.7767522811889649
+   "fit_time_s": 0.5981525897979736
   },
   "random_forest": {
    "rmse": 4520.357018564158,
@@ -52,7 +52,7 @@
    "rmse_noise_corrected": 4511.67680306139,
    "coverage95": 0.9333333333333333,
    "z_std": 1.0294720605822996,
-   "fit_time_s": 0.6872286796569824
+   "fit_time_s": 0.6683257102966309
   }
  },
  "holdout": null,
@@ -72,5 +72,6 @@
    "keff_nominal": 0.9133205664856208,
    "critical_uf4_molpct": 2.894339802860096
   }
- ]
+ ],
+ "verdict": "Best k_eff surrogate on 90 runs: gp with 348 pcm cross-validated RMSE (R2 = 0.99849, 95% interval coverage 92%). The Monte Carlo noise of the targets is 280 pcm rms, so part of every error is OpenMC noise. Worst: random_forest (4520 pcm). Learning curves show the error of gp falling from 921 to 406 pcm as training data grow - adding OpenMC runs keeps improving it."
 }

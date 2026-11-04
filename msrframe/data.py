@@ -29,8 +29,30 @@ def _files(cfg, patterns):
     return out
 
 
+def resolve_inputs(cfg, stage: str) -> list:
+    """The stage's input keys. ``from_screening`` -> Stage 1 consensus set (results/stage1_screening);
+    ``auto`` -> every catalogue parameter present in the first data file. Resolved once, in place."""
+    import json
+    st = cfg[stage]
+    inp = st.get("inputs", "from_screening" if stage == "keff" else None)
+    if inp == "from_screening":
+        p = cfg.out / "stage1_screening" / "summary.json"
+        if not p.exists():
+            raise FileNotFoundError(f"{stage}.inputs = from_screening but Stage 1 has not been run; run it or list the inputs")
+        st["inputs"] = json.loads(p.read_text())["consensus"]
+    elif inp in (None, "auto"):
+        files = _files(cfg, st.get("data", []))
+        cat = cfg.catalogue()
+        if not files or cat is None:
+            raise ValueError(f"{stage}.inputs = auto needs data files and a catalogue")
+        cols = pd.read_csv(files[0], nrows=5).columns
+        st["inputs"] = [k for k in cat["key"] if k in cols]
+    return list(st["inputs"])
+
+
 def load_stage_data(cfg, stage: str) -> pd.DataFrame:
     st = cfg[stage]
+    resolve_inputs(cfg, stage)
     files = _files(cfg, st.get("data", []))
     if not files:
         raise FileNotFoundError(f"[{stage}] no data files match {st.get('data')}")
@@ -86,6 +108,7 @@ def histories(df: pd.DataFrame, inputs, outputs, times=None):
 def add_data(cfg, stage: str, file, tag: str | None = None) -> Path:
     """Validate a CSV of new runs and copy it into the stage's user-data folder."""
     st = cfg[stage]
+    resolve_inputs(cfg, stage)
     new = pd.read_csv(file)
     need = list(st["inputs"]) + stage_outputs(st)[:1] + (["case_id", "time_y"] if stage == "burnup" else [])
     miss = [c for c in need if c not in new]

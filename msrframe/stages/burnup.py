@@ -45,6 +45,10 @@ def run(cfg, quiet=False, tag=None):
             for o in outputs:
                 oof[lab][o][0][te], oof[lab][o][1][te] = P[o]
 
+    # out-of-fold trajectories: each history predicted by models that never saw it (used by the dashboard)
+    write_json(out / "cv_predictions.json", {"ids": [str(i) for i in ids], "times": list(times),
+                                            "pred": {lab: {o: oof[lab][o][0] for o in outputs} for lab in labels}})
+
     rows, rvt = [], []
     for lab in labels:
         r = {"model": lab}
@@ -94,7 +98,7 @@ def run(cfg, quiet=False, tag=None):
                     + (f" with {b.keff_rmse_pcm:.0f} pcm k_eff RMSE in {folds}-fold CV" if "keff_rmse_pcm" in b else "")
                     + "; " + ", ".join(f"{o} {b[f'{o}_rel_rmse_%']:.2f}%" for o in outputs if f"{o}_rel_rmse_%" in b)
                     + f". Ranking: {' > '.join(ranking)}. Add depletion histories to data/user/ to tighten it.")
-    write_json(out / "summary.json", R["summary"])
+    write_json(out / "summary.json", {**R["summary"], "verdict": R["verdict"]})
     return R
 
 

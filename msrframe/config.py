@@ -20,6 +20,7 @@ DEFAULTS = {
     "keff": {"enabled": True},
     "burnup": {"enabled": True},
     "optimize": {"enabled": True},
+    "dashboard": {"enabled": True, "keff_models": "top3", "burnup_models": "top3", "file": "dashboard.html"},
 }
 
 
@@ -34,6 +35,7 @@ class Config(dict):
     """Dict with a ``root`` (directory of the YAML file) used to resolve relative paths."""
 
     root: Path
+    config_path: Path | None = None
 
     def path(self, p) -> Path:
         p = Path(p)
@@ -89,6 +91,7 @@ def load_config(path=None, overrides: dict | None = None) -> Config:
             root = (root / raw["root"]).resolve()
     cfg = Config(deep_merge(DEFAULTS, deep_merge(raw, overrides or {})))
     cfg.root = root
+    cfg.config_path = None if path is None else Path(path).resolve()
     for p in cfg.get("plugins") or []:
         load_plugin_file(cfg.path(p) if str(p).endswith(".py") else p)
     return cfg

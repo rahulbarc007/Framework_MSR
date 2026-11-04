@@ -21,4 +21,17 @@ def run_pipeline(cfg, stages=None, tag=None):
         print(f"  [{s}] done in {time.time() - t0:.1f} s\n")
     p = write_report(cfg, results)
     print(f"report -> {p}")
+    maybe_dashboard(cfg)
     return results, p
+
+
+def maybe_dashboard(cfg):
+    """Rebuild the interactive dashboard from whatever stages have results (never fails a run)."""
+    if not (cfg.get("dashboard") or {}).get("enabled", True):
+        return None
+    try:
+        from .dashboard import build_dashboard
+        return build_dashboard(cfg)
+    except Exception as e:  # pragma: no cover - report, do not break the training run
+        print(f"  dashboard not rebuilt: {e}")
+        return None

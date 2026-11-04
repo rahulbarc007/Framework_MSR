@@ -106,5 +106,6 @@
    "HN_molpct_rel_rmse_%": 3.6333697725133396,
    "Th232_fuel_kg_rel_rmse_%": 4.996595085785263
   }
- ]
+ ],
+ "verdict": "Best burnup surrogate over 60 histories: pca:gp with 488 pcm k_eff RMSE in 5-fold CV; U233_fuel_kg 0.32%, fissile_total_kg 0.36%, Pa233_fuel_kg 0.26%, FP_fuel_kg 12.25%, Lan_fuel_kg 5.50%, HN_molpct 0.07%, Th232_fuel_kg 0.08%. Ranking: pca:gp > pca:dnn > time_input:gbt > pca:random_forest. Add depletion histories to data/user/ to tighten it."
 }

@@ -41,3 +41,4 @@ burnup:
 
 optimize:
   enabled: false
+dashboard: {enabled: true, keff_models: all}   # every model, incl. the distilled custom plug-in

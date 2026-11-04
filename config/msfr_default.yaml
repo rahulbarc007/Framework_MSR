@@ -153,6 +153,16 @@ optimize:
       limits: {hn_max_molpct: 25.0, fissile_max_kg: 7000, alpha_T_pcm_per_K: -6.9, dT_up_K: 50, dT_down_K: 50}
       weights: {u233_extraction: 4.0}
 
+# ------------------------------------------------------------------ interactive dashboard (results/dashboard.html)
+#   One self-contained HTML page (no server, works offline) in which the trained models run in the
+#   browser: k_eff sliders, burnup trajectories, the fuel-cycle optimiser, accuracy history.
+#   Rebuilt by every "msrframe run" and by "python -m msrframe dashboard".
+dashboard:
+  enabled: true
+  keff_models: top3            # top3 | all | topN | list of labels, e.g. [gp, random_forest]
+  burnup_models: top3          # e.g. ["pca:gp", "time_input:gbt"]
+  file: dashboard.html
+
 # ------------------------------------------------------------------ active learning (python -m msrframe loop)
 #   Your OpenMC driver reads {inp} (CSV of inputs) and writes {out} (same rows + keff, keff_std).
 #   For a self-contained demo with the analytic stand-in use config/demo_active_learning.yaml

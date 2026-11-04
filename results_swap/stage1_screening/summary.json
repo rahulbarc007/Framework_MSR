@@ -61,17 +61,17 @@
  "info": {
   "random_forest": {
    "units": "dMSE / Var",
-   "time_s": 60.58916425704956,
-   "threshold": 0.00021816726330085813,
-   "dummy_max": 0.00010908363165042906,
+   "time_s": 61.451133728027344,
+   "threshold": 0.00021816726330085818,
+   "dummy_max": 0.00010908363165042909,
    "n_kept": 5,
-   "dummy_separation": 114.21382721295322,
+   "dummy_separation": 114.21382721295319,
    "extra": {},
    "mode": ""
   },
   "sobol_pce": {
    "units": "S_T",
-   "time_s": 0.08009099960327148,
+   "time_s": 0.07435059547424316,
    "threshold": 0.00021328056583942172,
    "dummy_max": 0.00010664028291971086,
    "n_kept": 7,
@@ -84,7 +84,7 @@
   },
   "sobol_surrogate:dnn": {
    "units": "S_T",
-   "time_s": 8.190140008926392,
+   "time_s": 30.847310304641724,
    "threshold": 0.00016497997501065454,
    "dummy_max": 8.248998750532727e-05,
    "n_kept": 7,
@@ -94,7 +94,7 @@
   },
   "spearman": {
    "units": "rho^2",
-   "time_s": 0.026230573654174805,
+   "time_s": 0.023102521896362305,
    "threshold": 0.2985380964502833,
    "dummy_max": 0.14926904822514164,
    "n_kept": 4,
@@ -102,5 +102,6 @@
    "extra": {},
    "mode": ""
   }
- }
+ },
+ "verdict": "4 screening methods (random_forest, sobol_pce, sobol_surrogate:dnn, spearman) were applied to 476 runs over 61 inputs. They retain 5, 7, 7, 4 inputs respectively (lowest pairwise Jaccard agreement 0.22). Consensus (2+ votes plus safety-forced inputs) keeps 9 inputs: u238_pct, hn_molpct, uf4_molpct, u234_pct, u236_pct, li7_enrich, core_radius, fuel_inlet_T, fuel_density_mult. A GP on this set reaches 661 pcm CV RMSE (R2 = 0.9936). Lowest retention-curve error: sobol_pce."
 }
